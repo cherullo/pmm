@@ -6,13 +6,17 @@ else ()
     set(_PMM_USER_HOME "$ENV{PROFILE}")
 endif ()
 
-if (WIN32)
-    set(_PMM_USER_DATA_DIR "$ENV{LocalAppData}/pmm/${PMM_VERSION}")
+if (NOT "$ENV{PMM_USER_DATA}" STREQUAL "")
+    set(_PMM_USER_DATA_DIR "$ENV{PMM_USER_DATA}") 
+elseif (WIN32)
+    set(_PMM_USER_DATA_DIR "$ENV{LocalAppData}")
 elseif ("$ENV{XDG_DATA_HOME}")
-    set(_PMM_USER_DATA_DIR "$ENV{XDG_DATA_HOME}/pmm/${PMM_VERSION}")
+    set(_PMM_USER_DATA_DIR "$ENV{XDG_DATA_HOME}")
 else ()
-    set(_PMM_USER_DATA_DIR "${_PMM_USER_HOME}/.local/share/pmm/${PMM_VERSION}")
+    set(_PMM_USER_DATA_DIR "${_PMM_USER_HOME}/.local/share")
 endif ()
+
+set (_PMM_USER_DATA_DIR "${_PMM_USER_DATA_DIR}/pmm/${PMM_VERSION}")
 
 # The main function.
 function(_pmm_project_fn)
